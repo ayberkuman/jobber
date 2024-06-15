@@ -6,7 +6,13 @@ export default async function CreateJobPage() {
   return (
     <main className="container py-12">
       <form action={createJobAction}>
-        <Input name="name" type="text" placeholder="Post a job" />
+        <Input required name="name" type="text" placeholder="Post a job" />
+        <Input
+          required
+          name="pay"
+          type="number"
+          placeholder="Payment for the job"
+        />
         <Button type="submit">Post Job</Button>
       </form>
     </main>

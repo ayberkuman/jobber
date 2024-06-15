@@ -92,6 +92,7 @@ export const jobs = pgTable("j_jobs", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
+  pay: integer("pay").notNull(),
 });
 
 export const applications = pgTable("j_applications", {

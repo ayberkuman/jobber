@@ -1,9 +1,9 @@
 "use server";
 
-import { jobs } from "@/db/schema";
-import { database } from "@/db/database";
 import { auth } from "@/auth";
-import { revalidatePath } from "next/cache";
+import { database } from "@/db/database";
+import { jobs } from "@/db/schema";
+import { redirect } from "next/navigation";
 
 export async function createJobAction(formData: FormData) {
   const session = await auth();
@@ -18,7 +18,8 @@ export async function createJobAction(formData: FormData) {
 
   await database.insert(jobs).values({
     name: formData.get("name") as string,
+    pay: Number(formData.get("pay")),
     userId: user.id,
   });
-  revalidatePath("/jobs/create");
+  redirect("/");
 }

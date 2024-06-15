@@ -11,7 +11,7 @@ export default async function Home() {
       <div className="grid grid-cols-4 gap-5">
         {allJobs.map((job) => (
           <div className="border p-4 rounded-md" key={job.id}>
-            {job.name}
+            {job.name}-{job.pay}
           </div>
         ))}
       </div>
