@@ -1,11 +1,32 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { createJobAction } from "./actions";
+import { createJobAction, createUploadUrlAction } from "./actions";
 
-export default async function CreateJobPage() {
+export default function CreateJobPage() {
   return (
     <main className="container py-12">
-      <form action={createJobAction}>
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const form = e.currentTarget;
+          const formData = new FormData(form);
+
+          const file = formData.get("file") as File;
+          const uploadUrl = await createUploadUrlAction(file.name, file.type);
+          const uploadFormData = new FormData();
+          uploadFormData.append("file", file);
+          await fetch(uploadUrl, {
+            method: "PUT",
+            body: uploadFormData,
+            headers: {
+              "Content-Type": file.type,
+            },
+          });
+
+          /*  await createJobAction(formData); */
+        }}
+      >
         <Input required name="name" type="text" placeholder="Post a job" />
         <Input
           required
@@ -13,6 +34,7 @@ export default async function CreateJobPage() {
           type="number"
           placeholder="Payment for the job"
         />
+        <Input type="file" name="file" />
         <Button type="submit">Post Job</Button>
       </form>
     </main>
