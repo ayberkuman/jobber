@@ -14,20 +14,26 @@ export default function CreateJobPage() {
 
           const file = formData.get("file") as File;
           const uploadUrl = await createUploadUrlAction(file.name, file.type);
-          const uploadFormData = new FormData();
-          uploadFormData.append("file", file);
           await fetch(uploadUrl, {
             method: "PUT",
-            body: uploadFormData,
-            headers: {
-              "Content-Type": file.type,
-            },
+            body: file,
           });
 
-          /*  await createJobAction(formData); */
+          await createJobAction({
+            name: formData.get("name") as string,
+            description: formData.get("description") as string,
+            pay: Number(formData.get("pay")),
+            fileName: file.name,
+          });
         }}
       >
         <Input required name="name" type="text" placeholder="Post a job" />
+        <Input
+          required
+          name="description"
+          type="text"
+          placeholder="Describe the gig"
+        />
         <Input
           required
           name="pay"

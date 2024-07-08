@@ -6,7 +6,17 @@ import { jobs } from "@/db/schema";
 import { getSignedUrlForS3 } from "@/lib/s3";
 import { redirect } from "next/navigation";
 
-export async function createJobAction(formData: FormData) {
+export async function createJobAction({
+  fileName,
+  name,
+  description,
+  pay,
+}: {
+  fileName: string;
+  name: string;
+  description: string;
+  pay: number;
+}) {
   const session = await auth();
   if (!session) {
     throw new Error("Unauthorized");
@@ -18,13 +28,15 @@ export async function createJobAction(formData: FormData) {
   }
 
   await database.insert(jobs).values({
-    name: formData.get("name") as string,
-    pay: Number(formData.get("pay")),
+    name,
+    description,
+    pay,
+    fileKey: fileName,
     userId: user.id,
   });
   redirect("/");
 }
 
 export async function createUploadUrlAction(key: string, type: string) {
-  return await getSignedUrlForS3(key,type);
+  return await getSignedUrlForS3(key, type);
 }
