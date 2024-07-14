@@ -100,3 +100,5 @@ export const jobs = pgTable("j_jobs", {
 export const applications = pgTable("j_applications", {
   id: serial("id").primaryKey(),
 });
+
+export type Job = typeof jobs.$inferSelect;
